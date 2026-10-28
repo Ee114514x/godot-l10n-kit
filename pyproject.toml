@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "godot-l10n-kit"
+version = "0.1.0"
+description = "Godot 导出包（project.binary / pck / APK）本地化打补丁工具"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+font = ["fonttools>=4.40"]
+
+[project.scripts]
+glk = "glk.cli:main"
+
+[tool.setuptools]
+packages = ["glk"]

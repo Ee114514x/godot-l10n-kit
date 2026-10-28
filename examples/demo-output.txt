@@ -1,0 +1,72 @@
+# python3 examples/build_demo.py 的实际输出（绝对路径已改为相对）
+
+已生成合成素材：examples/out/src
+
+$ glk pbin list examples/out/src/project.binary
+application/config/name                                  string('glk demo')
+application/config/features                              string('4.4')
+application/run/max_fps                                  int(60)
+display/window/size/viewport_width                       int(1280)
+display/window/size/viewport_height                      int(720)
+共 5 项
+
+$ glk pck list examples/out/src/assets.sparsepck
+引擎版本 4.4.0，sparse，2 个条目
+         0  offset=0          flags=0  project.binary
+        29  offset=0          flags=0  demo/hello.txt
+
+$ glk apk info examples/out/src/demo.apk
+        68         68  AndroidManifest.xml
+       520        520  classes.dex
+       260        260  lib/arm64-v8a/libdemo.so
+         0          0  assets/project.binary
+         0          0  assets/assets.sparsepck
+        16         16  assets/demo/hello.txt
+        22         22  META-INF/MANIFEST.MF
+        14         14  META-INF/CERT.RSA
+共 8 个条目
+
+$ glk tr list examples/out/src/demo.zh.translation
+gtrn  locale=-  共 3 条
+  # GTRN 版本 1
+Hello, world                             -> 你好，世界
+Start Game                               -> 开始游戏
+Your earned {gold} Gold.                 -> 你获得了 {gold} 金币。
+
+$ glk font carve examples/out/src/demo.ttf-1a2b3c.fontdata -o examples/out/build/carved.ttf
+已取出 644 字节 -> examples/out/build/carved.ttf
+
+$ glk font info examples/out/build/carved.ttf
+{"family": "GlkDemo", "glyphs": 3, "cjk": 2}
+
+$ glk font subset examples/out/build/carved.ttf --chars 你好A -o examples/out/build/font.ttf
+已裁剪 -> examples/out/build/font.ttf
+
+$ glk pck add examples/out/src/assets.sparsepck --file mod/entry.gd=examples/out/src/entry.gd --file mod/font.ttf=examples/out/build/font.ttf -o examples/out/build/assets.sparsepck
+已写出 examples/out/build/assets.sparsepck（sparse=True，4 个条目）
+sparse 包不存文件数据：新文件需同时放进 APK 的 assets/ 下同名路径
+
+$ glk pbin autoload examples/out/src/project.binary DemoMod *res://mod/entry.gd -o examples/out/build/project.binary
+已写入 examples/out/build/project.binary
+
+$ glk apk keygen -o examples/out/keys --cn glk demo
+key  examples/out/keys/key.pem
+cert examples/out/keys/cert.der
+pub  examples/out/keys/pub.der
+
+$ glk apk repack examples/out/src/demo.apk -o examples/out/build/demo-signed.apk --replace assets/project.binary=examples/out/build/project.binary --replace assets/assets.sparsepck=examples/out/build/assets.sparsepck --add assets/mod/entry.gd=examples/out/src/entry.gd --add assets/mod/font.ttf=examples/out/build/font.ttf --keydir examples/out/keys
+已写出 examples/out/build/demo-signed.apk
+自检通过：6 个原条目完整保留
+签名校验 {"signed": true, "algorithm": "0x103", "digest_match": true, "signature_valid": true, "pubkey_match": true, "block_before_cd": true}
+
+$ glk apk verify examples/out/build/demo-signed.apk --pub examples/out/keys/pub.der
+{
+  "signed": true,
+  "algorithm": "0x103",
+  "digest_match": true,
+  "signature_valid": true,
+  "pubkey_match": true,
+  "block_before_cd": true
+}
+
+全部完成，产物在 examples/out/build

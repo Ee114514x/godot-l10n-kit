@@ -1,5 +1,7 @@
 # godot-l10n-kit
 
+[![test](https://github.com/Ee114514x/godot-l10n-kit/actions/workflows/test.yml/badge.svg)](https://github.com/Ee114514x/godot-l10n-kit/actions/workflows/test.yml)
+
 给 Godot 4 导出包做本地化的命令行工具：改 `project.binary` 注册注入脚本、往 `pck` / `sparsepck` 里塞资源、裁字体、读导出后的翻译资源、重打包并重签 APK。
 
 只处理容器格式，不反编译、不解密、不破解，也不附带任何游戏资源。请只对你有权修改的包使用（自己的作品，或开发者明确授权的本地化项目）。
@@ -74,7 +76,7 @@ glk apk repack game.apk -o build/game-signed.apk \
 python3 examples/build_demo.py
 ```
 
-产物在 `examples/out/`，可以直接拿来对照每一步的输入输出。
+产物在 `examples/out/`，可以直接拿来对照每一步的输入输出。一次完整运行的实际输出见 [examples/demo-output.txt](examples/demo-output.txt)。
 
 ## sparse pck 与普通 pck 的区别
 
